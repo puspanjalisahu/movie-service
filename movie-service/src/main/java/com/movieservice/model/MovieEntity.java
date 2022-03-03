@@ -36,7 +36,7 @@ public class MovieEntity {
 	@Column(name = "name")
 	private String name;
 	// date format pattern="dd-MM-yyyy"
-    @JsonFormat(shape=JsonFormat.Shape.STRING)
+        @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
 	@Column(name = "releaseDate")
 	private Date releaseDate ;
 	
