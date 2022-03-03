@@ -1,0 +1,12 @@
+com\movieservice\config\SwaggerConfig.class
+com\movieservice\repository\MovieRepository.class
+com\movieservice\model\MovieEntity$MovieEntityBuilder.class
+com\movieservice\impl\MovieServiceImpl.class
+com\movieservice\dto\MovieGridData.class
+com\movieservice\service\MovieService.class
+com\movieservice\dto\SearchReuestDto.class
+com\movieservice\cotroller\MovieServiceController.class
+com\movieservice\util\MovieUtil.class
+com\movieservice\MovieServiceApplication.class
+com\movieservice\exception\MovieException.class
+com\movieservice\model\MovieEntity.class
