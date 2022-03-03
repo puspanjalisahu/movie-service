@@ -31,7 +31,7 @@ private MovieRepository movieRepo;
 		String id = MovieUtil.generateId(movie.getName(), movie.getReleaseDate());
 		Optional<MovieEntity>  existingMovie = movieRepo.findById(id);
 		if(existingMovie.isPresent()) {
-			throw new MovieException("The Movie is alread preset !!!");
+			throw new MovieException("The Movie is already present !!!");
 		}
 		movie.setId(id);
 		MovieEntity newMovie = movieRepo.save(movie);
@@ -47,7 +47,7 @@ private MovieRepository movieRepo;
 			if(existingMovies ==null || existingMovies.isEmpty()) {
 				throw new MovieException("The movie not found for the provided name, please enter correct name!!!");
 			}else if(existingMovies.size() > 1) {
-				throw new MovieException("Multiple movies found for same name, please enter release ear to identify correct movie !!!");
+				throw new MovieException("Multiple movies found for same name, please enter release year to identify correct movie !!!");
 			}
 		}else {
 			existingMovies = movieRepo.findByNameAndYear(name,MovieUtil.formSearchCriteria(releaseYear));
