@@ -46,9 +46,7 @@ private EntityManager em;
 
 	@Override
 	public MovieEntity updateMovie(String name, String releaseYear,MovieEntity inputMovie) throws MovieException {
-		
 		List<MovieEntity> existingMovies = null;
-	
 		if(MovieUtil.isEmpty(releaseYear)) {
 			existingMovies = movieRepo.findByName(name);
 			if(existingMovies ==null || existingMovies.isEmpty()) {
@@ -57,15 +55,19 @@ private EntityManager em;
 				throw new MovieException("Multiple movies found for same name, please enter release year to identify correct movie !!!");
 			}
 		}else {
-			releaseYear = MovieUtil.formSearchCriteria(releaseYear);
-			StringBuilder sql = new StringBuilder();
+			//releaseYear = MovieUtil.formSearchCriteria(releaseYear);
+			/*StringBuilder sql = new StringBuilder();
 			sql.append("select * from MOVIE where name ='"+name+"' and TO_CHAR(release_date,'YYYY/MM/DD')  like '"+releaseYear+"'");
 			 Query query = em.createNativeQuery(sql.toString());
-			 existingMovies = query.getResultList();
+			 existingMovies = query.getResultList();*/
 			//existingMovies = movieRepo.findByParameter(name,releaseYear);
-			if(existingMovies ==null || existingMovies.isEmpty()) {
+			String id = name+"_"+releaseYear;
+			Optional<MovieEntity> extMovie = movieRepo.findById(id);
+			if(extMovie ==null || !extMovie.isPresent()) {
 				throw new MovieException("The movie not found for the provided name and year, please enter correct data !!!");
 			}
+			existingMovies = new ArrayList<>();
+			existingMovies.add(extMovie.get());
 		}
 		
 		MovieEntity extMovie = existingMovies.get(0);
