@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 public class MovieServiceImpl implements MovieService {
 @Autowired
 private MovieRepository movieRepo;
+
+@Autowired
+private EntityManager em;
 	
 	public List<MovieEntity> getAllMovies() {
 		List<MovieEntity> movies = new ArrayList<MovieEntity>();
@@ -31,7 +37,7 @@ private MovieRepository movieRepo;
 		String id = MovieUtil.generateId(movie.getName(), movie.getReleaseDate());
 		Optional<MovieEntity>  existingMovie = movieRepo.findById(id);
 		if(existingMovie.isPresent()) {
-			throw new MovieException("The Movie is already present !!!");
+			throw new MovieException("The Movie is alread preset !!!");
 		}
 		movie.setId(id);
 		MovieEntity newMovie = movieRepo.save(movie);
@@ -42,15 +48,21 @@ private MovieRepository movieRepo;
 	public MovieEntity updateMovie(String name, String releaseYear,MovieEntity inputMovie) throws MovieException {
 		
 		List<MovieEntity> existingMovies = null;
+	
 		if(MovieUtil.isEmpty(releaseYear)) {
-			existingMovies = movieRepo.findByTitle(name);
+			existingMovies = movieRepo.findByName(name);
 			if(existingMovies ==null || existingMovies.isEmpty()) {
 				throw new MovieException("The movie not found for the provided name, please enter correct name!!!");
 			}else if(existingMovies.size() > 1) {
 				throw new MovieException("Multiple movies found for same name, please enter release year to identify correct movie !!!");
 			}
 		}else {
-			existingMovies = movieRepo.findByNameAndYear(name,MovieUtil.formSearchCriteria(releaseYear));
+			releaseYear = MovieUtil.formSearchCriteria(releaseYear);
+			StringBuilder sql = new StringBuilder();
+			sql.append("select * from MOVIE where name ='"+name+"' and TO_CHAR(release_date,'YYYY/MM/DD')  like '"+releaseYear+"'");
+			 Query query = em.createNativeQuery(sql.toString());
+			 existingMovies = query.getResultList();
+			//existingMovies = movieRepo.findByParameter(name,releaseYear);
 			if(existingMovies ==null || existingMovies.isEmpty()) {
 				throw new MovieException("The movie not found for the provided name and year, please enter correct data !!!");
 			}
