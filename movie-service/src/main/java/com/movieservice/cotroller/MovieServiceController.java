@@ -94,8 +94,8 @@ public class MovieServiceController {
 			if(movie == null) {
 				return new ResponseEntity<>("The input cann't be empty !!!", HttpStatus.BAD_REQUEST);
 			}
-			if(MovieUtil.isEmpty(movie.getName())) {
-				return new ResponseEntity<>("The name input parameter cann't be empty !!!", HttpStatus.BAD_REQUEST);
+			if(MovieUtil.isEmpty(name)) {
+				return new ResponseEntity<>("The name parameter cann't be empty !!!", HttpStatus.BAD_REQUEST);
 			}
 			if(!MovieUtil.isEmpty(releaseYear) && !MovieUtil.validYear(releaseYear)) {
 				return new ResponseEntity<>("Enter valid year !!!", HttpStatus.BAD_REQUEST);
