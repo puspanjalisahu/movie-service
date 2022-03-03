@@ -50,6 +50,6 @@ public static boolean validYear(String releaseYear) {
 		 return false;
 	 }
 	 Pattern pattern = Pattern.compile(".*[^0-9].*");
-	return pattern.matcher(releaseYear).matches();
+	return !pattern.matcher(releaseYear).matches();
 }
 }
